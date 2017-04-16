@@ -1,38 +1,41 @@
-# ACR FİLE -- FİLE UPLOAD CLASS
+#  ACR FİLE -- FİLE UPLOAD CLASS
 
+[Query-File-Upload](https://github.com/blueimp/jQuery-File-Upload): Paketi refarans alarak oluşturulmuştur.
 
-[CCAN](https://github.com/blueimp/jQuery-File-Upload): Paketi refarans alarak oluşturulmuştur.
+## Kurulum:
+### acr_file_id
 
-### Kurulum
+```php 
+PHP
+$acr_file_id = AcrFile::create($acr_file_id); 
+```
+acr_file_id: ilişkili tablodan gelmeli örneğin ürünler için kullanacaksanız urun tablonuzda acr_file_id stunu olmalı, acr_file_id değişkeni null gelirse : $acr_file_id = AcrFile::create($acr_file_id) yeni bir acr_file_id oluşturur.
+```php 
+PHP
+ echo AcrFile::css();  
+```
+CSS dosyalarını yükler.
+```php 
+PHP
+echo AcrFile::form()
+```
+Formu yükler
+```php 
+PHP
+AcrFile::js($acr_file_id)
+```
+Java script dosylarını yükler.
 
-### Rules
-
-- Libraries must be usable from C or C++, ideally both
-- Libraries should be usable from more than one platform (ideally, all major desktops and/or all major mobile)
-- Libraries should compile and work on both 32-bit and 64-bit platforms
-- Libraries should use at most two files
-
-Exceptions will be allowed for good reasons.
-
-### Recent additions
-
-Recent additions are marked with an asterisk in the left column.
-
-### New libraries and corrections
-
-See discussion after the list.
-
-### JSON Parsing
-
-There are a lot of JSON parsers listed here. For some analysis and performance
-results, check out https://github.com/miloyip/nativejson-benchmark
-
-### Other lists
-
-Also you might be interested in other related, but different lists:
-
-- [clib](https://github.com/clibs/clib/wiki/Packages): list of (mostly) small single C functions (licenses not listed)
-- [CCAN](https://ccodearchive.net/list.html): package of lots of shareable C functions (mixed licenses)
-
-### Library listing
+```sql 
+Mysql Tablosu
+CREATE TABLE `acr_files` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `session_id` varchar(66) COLLATE utf8_turkish_ci DEFAULT NULL,
+  `file_dir` varchar(50) COLLATE utf8_turkish_ci DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `sil` tinyint(4) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
+```
 
