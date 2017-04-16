@@ -3,6 +3,20 @@
 [Query-File-Upload](https://github.com/blueimp/jQuery-File-Upload): Paketi refarans alarak oluşturulmuştur.
 
 ## Kurulum:
+####composer json : 
+```
+"acr/file": "dev-file"
+```
+### CONFİG
+
+#### Providers
+```
+Acr\File\AcrFileServiceProviders::class
+```
+#### Aliases
+```
+'AcrFile'      => Acr\File\Facades\AcrFile::class
+```
 ### acr_file_id
 
 ```php 
