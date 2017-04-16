@@ -1,5 +1,7 @@
 #  ACR FİLE -- FİLE UPLOAD CLASS
 
+[Total Downloads](https://packagist.org/packages/acr/file)
+[Latest Unstable Version]](https://packagist.org/packages/packages/acr/file)
 [Query-File-Upload](https://github.com/blueimp/jQuery-File-Upload): Paketi refarans alarak oluşturulmuştur.
 
 ## Kurulum:
@@ -38,4 +40,4 @@ CREATE TABLE `acr_files` (
   `sil` tinyint(4) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
 ```
-
+Dosya yolu  /acr_files/{session_id}
