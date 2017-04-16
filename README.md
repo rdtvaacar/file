@@ -1,7 +1,7 @@
 #  ACR FİLE -- FİLE UPLOAD CLASS
 
-[Total Downloads](https://packagist.org/packages/acr/file)
-[Latest Unstable Version]](https://packagist.org/packages/packages/acr/file)
+[![Total Downloads]](https://packagist.org/packages/acr/file)
+[![Latest Unstable Version]](https://packagist.org/packages/packages/acr/file)
 [Query-File-Upload](https://github.com/blueimp/jQuery-File-Upload): Paketi refarans alarak oluşturulmuştur.
 
 ## Kurulum:
