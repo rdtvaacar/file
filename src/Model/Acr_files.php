@@ -34,4 +34,9 @@ class acr_files extends Model
 
     }
 
+    function child_fields_create($data)
+    {
+        Acr_files_childs::insert($data);
+    }
+
 }

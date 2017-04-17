@@ -217,7 +217,7 @@ class UploadHandler extends Controller
 
     protected function get_user_id()
     {
-        $acr_file_model = new Acr_files();
+        /*$acr_file_model = new Acr_files();
         if ($this->options['acr_file_id']) {
             $session_id = $acr_file_model->acr_file_session($this->options['acr_file_id']);
             if ($session_id == null) {
@@ -227,9 +227,8 @@ class UploadHandler extends Controller
         } else {
             $session_id = 'genel';
         }
-
-        return $session_id;
-
+        return $session_id;*/
+        return $this->options['acr_file_id'];
     }
 
     protected function get_user_path()
@@ -1124,11 +1123,18 @@ class UploadHandler extends Controller
     protected function handle_file_upload($uploaded_file, $name, $size, $type, $error,
                                           $index = null, $content_range = null)
     {
+        $acr_file_model = new acr_files();
+
         $file       = new \stdClass();
         $file->name = $this->get_file_name($uploaded_file, $name, $size, $type, $error,
             $index, $content_range);
-        $file->size = $this->fix_integer_overflow((int)$size);
-        $file->type = $type;
+
+        $file_dot      = strtolower(pathinfo($file->name, PATHINFO_EXTENSION));
+        $org_name      = str_replace('.' . $file_dot, '', $name);
+        $acr_file_name = self::rastGeleSayisalMetin();
+        $file->name    = $acr_file_name . '.' . $file_dot;
+        $file->size    = $this->fix_integer_overflow((int)$size);
+        $file->type    = $type;
         if ($this->validate($uploaded_file, $file, $error, $index)) {
             $this->handle_form_data($file, $index);
             $upload_dir = $this->get_upload_path();
@@ -1147,6 +1153,14 @@ class UploadHandler extends Controller
                         FILE_APPEND
                     );
                 } else {
+                    $data = [
+                        'acr_file_id'   => $this->options['acr_file_id'],
+                        'file_name_org' => $org_name,
+                        'file_name'     => $acr_file_name,
+                        'fize_size'     => $file->size,
+                        'file_type'     => $file_dot,
+                    ];
+                    $acr_file_model->child_fields_create($data);
                     move_uploaded_file($uploaded_file, $file_path);
                 }
             } else {
@@ -1385,6 +1399,12 @@ class UploadHandler extends Controller
         return $metin;
     }
 
+    function rastGeleSayisalMetin()
+    {
+        $metin = rand(10000000000, 99999999999);
+        return $metin;
+    }
+
     public function get($print_response = true)
     {
         if ($print_response && $this->get_query_param('download')) {
@@ -1431,7 +1451,7 @@ class UploadHandler extends Controller
                 foreach ($upload['tmp_name'] as $index => $value) {
                     $files[] = $this->handle_file_upload(
                         $upload['tmp_name'][$index],
-                        $file_name ? $file_name : self::ingilizceYap($upload['name'][$index]),
+                        $file_name ? $file_name : $upload['name'][$index],
                         $size ? $size : $upload['size'][$index],
                         $upload['type'][$index],
                         $upload['error'][$index],
@@ -1445,7 +1465,7 @@ class UploadHandler extends Controller
                 $files[] = $this->handle_file_upload(
                     isset($upload['tmp_name']) ? $upload['tmp_name'] : null,
                     $file_name ? $file_name : (isset($upload['name']) ?
-                        self::ingilizceYap($upload['name']) : null),
+                        $upload['name'] : null),
                     $size ? $size : (isset($upload['size']) ?
                         $upload['size'] : $this->get_server_var('CONTENT_LENGTH')),
                     isset($upload['type']) ?
