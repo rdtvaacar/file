@@ -51,5 +51,17 @@ CREATE TABLE `acr_files` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `sil` tinyint(4) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
+
+
+CREATE TABLE `acr_files_childs` (
+  `id` int(11) NOT NULL,
+  `acr_file_id` int(11) DEFAULT NULL,
+  `file_name` varchar(200) COLLATE utf8_turkish_ci DEFAULT NULL,
+  `file_name_org` varchar(200) COLLATE utf8_turkish_ci DEFAULT NULL,
+  `fize_size` varchar(25) COLLATE utf8_turkish_ci DEFAULT NULL,
+  `file_type` varchar(10) COLLATE utf8_turkish_ci DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `sil` tinyint(4) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
 ```
-Dosya yolu  /acr_files/{session_id}
+Dosya yolu  /acr_files/acr_file_id
