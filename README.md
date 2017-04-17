@@ -36,7 +36,7 @@ echo AcrFile::form()
 Formu yükler
 ```php 
 PHP
-AcrFile::js($acr_file_id)
+echo AcrFile::js($acr_file_id)
 ```
 Java script dosylarını yükler.
 
