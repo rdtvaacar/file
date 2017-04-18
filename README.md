@@ -42,6 +42,7 @@ Java script dosylarını yükler.
 
 ```sql 
 Mysql Tablosu
+
 CREATE TABLE `acr_files` (
   `id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
@@ -52,6 +53,11 @@ CREATE TABLE `acr_files` (
   `sil` tinyint(4) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
 
+-- --------------------------------------------------------
+
+--
+-- Tablo için tablo yapısı `acr_files_childs`
+--
 
 CREATE TABLE `acr_files_childs` (
   `id` int(11) NOT NULL,
@@ -63,5 +69,17 @@ CREATE TABLE `acr_files_childs` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `sil` tinyint(4) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
+
+ALTER TABLE `acr_files`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `acr_files_childs`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `acr_files`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `acr_files_childs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 ```
 Dosya yolu  /acr_files/acr_file_id
