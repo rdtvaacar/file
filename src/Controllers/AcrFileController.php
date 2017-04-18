@@ -13,14 +13,10 @@ use Acr\File\Controllers\MailController;
 
 class AcrFileController extends Controller
 {
-    function create($acr_file_id)
+    function create($acr_file_id = null, $parent_id = null)
     {
         $acr_file_model = new acr_files();
-        if (empty($acr_file_id)) {
-            return $acr_file_model->kaydet(null, uniqid());
-        } else {
-            return $acr_file_id;
-        }
+        return $acr_file_model->kaydet($acr_file_id, $parent_id);
 
     }
 

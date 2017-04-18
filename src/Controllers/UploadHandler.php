@@ -1482,14 +1482,18 @@ class UploadHandler extends Controller
 
     public function delete($print_response = true)
     {
-        $file_names = $this->get_file_names_params();
+        $acr_file_model = new Acr_files();
+        $file_names     = $this->get_file_names_params();
         if (empty($file_names)) {
             $file_names = array($this->get_file_name_param());
         }
         $response = array();
         foreach ($file_names as $file_name) {
-            $file_path = $this->get_upload_path($file_name);
-            $success   = is_file($file_path) && $file_name[0] !== '.' && unlink($file_path);
+            $file_path      = $this->get_upload_path($file_name);
+            $success        = is_file($file_path) && $file_name[0] !== '.' && unlink($file_path);
+            $file_dot       = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+            $acr_child_file = str_replace('.' . $file_dot, '', $file_name);
+            $acr_file_model->sil_childs($acr_child_file);
             if ($success) {
                 foreach ($this->options['image_versions'] as $version => $options) {
                     if (!empty($version)) {
