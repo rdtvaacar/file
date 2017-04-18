@@ -46,7 +46,7 @@ Mysql Tablosu
 CREATE TABLE `acr_files` (
   `id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
-  `session_id` varchar(66) COLLATE utf8_turkish_ci DEFAULT NULL,
+  `parent_id` int(11) DEFAULT NULL,
   `file_dir` varchar(50) COLLATE utf8_turkish_ci DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
