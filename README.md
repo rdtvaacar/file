@@ -62,6 +62,7 @@ CREATE TABLE `acr_files` (
 CREATE TABLE `acr_files_childs` (
   `id` int(11) NOT NULL,
   `acr_file_id` int(11) DEFAULT NULL,
+  `sira` INT NOT NULL DEFAULT '10',
   `file_name` varchar(200) COLLATE utf8_turkish_ci DEFAULT NULL,
   `file_name_org` varchar(200) COLLATE utf8_turkish_ci DEFAULT NULL,
   `fize_size` varchar(25) COLLATE utf8_turkish_ci DEFAULT NULL,
