@@ -19,7 +19,10 @@ class acr_files extends Model
     {
         if (acr_files::where('id', $acr_file_id)->count() == 0) {
             if (!empty($acr_file_id)) {
-                $data = ['id' => $acr_file_id, 'parent_id' => $session_id];
+                $data = [
+                    'id'        => $acr_file_id,
+                    'parent_id' => $session_id,
+                ];
             } else {
                 $data = ['parent_id' => $session_id];
             }

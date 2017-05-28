@@ -96,8 +96,8 @@ class AcrFileController extends Controller
                 // Uncomment the following to create medium sized images:
 
                 'medium' => array(
-                    'max_width'  => 1600,
-                    'max_height' => 1600
+                    'max_width'  => 1200,
+                    'max_height' => 1200
                 ),
 
                 'thumbnail' => array(
@@ -111,8 +111,8 @@ class AcrFileController extends Controller
                     // Uncomment the following to force the max
                     // dimensions and e.g. create square thumbnails:
                     //'crop' => true,
-                    'max_width'  => 100,
-                    'max_height' => 100
+                    'max_width'  => 180,
+                    'max_height' => 180
                 )
             ),
             'print_response'           => true
