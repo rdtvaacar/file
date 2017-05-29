@@ -152,7 +152,7 @@ class AcrFileController extends Controller
 
     function css()
     {
-        return '<link rel="stylesheet" href="/plugins/jfup/css/style.css">
+        return '
     <!-- blueimp Gallery styles -->
     <link rel="stylesheet" href="//blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
     <!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
