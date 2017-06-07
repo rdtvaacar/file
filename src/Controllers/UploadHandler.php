@@ -1157,7 +1157,7 @@ class UploadHandler extends Controller
                         'acr_file_id'   => $this->options['acr_file_id'],
                         'file_name_org' => $org_name,
                         'file_name'     => $acr_file_name,
-                        'fize_size'     => $file->size,
+                        'file_size'     => $file->size,
                         'file_type'     => $file_dot,
                     ];
                     $acr_file_model->child_fields_create($data);
