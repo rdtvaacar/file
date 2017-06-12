@@ -37,7 +37,7 @@ class AcrFileController extends Controller
         $options = [
             'acr_file_id'              => $acr_file_id,
             'upload_dir'               => base_path() . '/public_html/acr_files/',
-            'upload_url'               => base_path() . '/public_html/acr_files/',
+            'upload_url'               => '/acr_files/',
             'script_url'               => '/acr/file/upload/',
             // the redirect parameter, e.g. '/files/'.
             'download_via_php'         => false,
