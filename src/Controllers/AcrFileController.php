@@ -27,17 +27,17 @@ class AcrFileController extends Controller
         $acr_file_id    = $request->input('acr_file_id');
 
         $session_id = $acr_file_model->acr_file_session($acr_file_id);
-        @unlink('/acr_files/' . $session_id . '/' . $file);
-        @unlink('/acr_files/' . $session_id . '/thumbnail/' . $file);
-        @unlink('/acr_files/' . $session_id . '/medium/' . $file);
+        @unlink(base_path() . '/public_html/acr_files/' . $session_id . '/' . $file);
+        @unlink(base_path() . '/public_html/acr_files/' . $session_id . '/thumbnail/' . $file);
+        @unlink(base_path() . '/public_html/acr_files/' . $session_id . '/medium/' . $file);
     }
 
     function option($acr_file_id = null)
     {
         $options = [
             'acr_file_id'              => $acr_file_id,
-            'upload_dir'               => '/acr_files/',
-            'upload_url'               => '/acr_files/',
+            'upload_dir'               => base_path() . '/public_html/acr_files/',
+            'upload_url'               => base_path() . '/public_html/acr_files/',
             'script_url'               => '/acr/file/upload/',
             // the redirect parameter, e.g. '/files/'.
             'download_via_php'         => false,
