@@ -32,7 +32,7 @@ class AcrFileController extends Controller
         @unlink(base_path() . '/public_html/acr_files/' . $session_id . '/medium/' . $file);
     }
 
-    function option($acr_file_id = null)
+    function option($acr_file_id = null, $yuklenenler = true)
     {
         $options = [
             'acr_file_id'              => $acr_file_id,
@@ -115,7 +115,7 @@ class AcrFileController extends Controller
                     'max_height' => 180
                 )
             ),
-            'print_response'           => true
+            'print_response'           => $yuklenenler
         ];
         return $options;
 
@@ -124,7 +124,8 @@ class AcrFileController extends Controller
     function index(Request $request)
     {
         $acr_file_id = $request->input('acr_file_id');
-        new UploadHandler(self::option($acr_file_id));
+        $yuklenenler = $request->input('yuklenenler');
+        new UploadHandler(self::option($acr_file_id, $yuklenenler));
     }
 
     function login(Request $request)
@@ -300,7 +301,7 @@ class AcrFileController extends Controller
     </script>';
     }
 
-    function js($acr_file_id)
+    function js($acr_file_id, $yuklenenler = null)
     {
         return '<script src="/plugins/jfup/js/vendor/jquery.ui.widget.js"></script>
 <!-- The Templates plugin is included to render the upload/download listings -->
@@ -342,7 +343,7 @@ class AcrFileController extends Controller
         $(\'#fileupload\').fileupload({
             // Uncomment the following to send cross-domain cookies:
             //xhrFields: {withCredentials: true},
-            url: \'/acr/file/upload?acr_file_id=' . $acr_file_id . '\'
+            url: \'/acr/file/upload?acr_file_id=' . $acr_file_id . '&yuklenenler=' . $yuklenenler . '\'
         });
 
         // Enable iframe cross-domain access via redirect option:
