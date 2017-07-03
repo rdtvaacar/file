@@ -34,7 +34,8 @@ class AcrFileController extends Controller
 
     function option($acr_file_id = null, $yuklenenler = true)
     {
-        $options = [
+        $yuklenenler = empty($yuklenenler) ? true : $yuklenenler;
+        $options     = [
             'acr_file_id'              => $acr_file_id,
             'upload_dir'               => base_path() . '/public_html/acr_files/',
             'upload_url'               => '/acr_files/',
