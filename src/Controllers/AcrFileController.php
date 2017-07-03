@@ -32,9 +32,9 @@ class AcrFileController extends Controller
         @unlink(base_path() . '/public_html/acr_files/' . $session_id . '/medium/' . $file);
     }
 
-    function option($acr_file_id = null, $yuklenenler = true)
+    function option($acr_file_id = null, $yuklenenler = 0)
     {
-        $yuklenenler = empty($yuklenenler) ? true : $yuklenenler;
+        $yuklenenler = $yuklenenler == 0 ? true : false;
         $options     = [
             'acr_file_id'              => $acr_file_id,
             'upload_dir'               => base_path() . '/public_html/acr_files/',
@@ -302,7 +302,7 @@ class AcrFileController extends Controller
     </script>';
     }
 
-    function js($acr_file_id, $yuklenenler = null)
+    function js($acr_file_id, $yuklenenler = 0)
     {
         return '<script src="/plugins/jfup/js/vendor/jquery.ui.widget.js"></script>
 <!-- The Templates plugin is included to render the upload/download listings -->
