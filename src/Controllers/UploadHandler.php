@@ -1131,7 +1131,7 @@ class UploadHandler extends Controller
 
         $file_dot      = strtolower(pathinfo($file->name, PATHINFO_EXTENSION));
         $org_name      = str_replace('.' . $file_dot, '', $name);
-        $acr_file_name = self::rastGeleSayisalMetin();
+        $acr_file_name = self::ingilizceYap($org_name);
         $file->name    = $acr_file_name . '.' . $file_dot;
         $file->size    = $this->fix_integer_overflow((int)$size);
         $file->type    = $type;
@@ -1391,18 +1391,48 @@ class UploadHandler extends Controller
         $this->send_content_type_header();
     }
 
-    function ingilizceYap($metin)
+    public static function ingilizceYap($url)
     {
-        $search  = array(' ', 'Ç', 'ç', 'Ğ', 'ğ', 'ı', 'İ', 'Ö', 'ö', 'Ş', 'ş', 'Ü', 'ü', '&Ccedil;', '&#286;', '&#304;', '&Ouml;', '&#350;', '&Uuml;', '&ccedil;', '&#287;', '&#305;', '&ouml;', '&#351;', '&uuml;');
-        $replace = array('-', 'C', 'c', 'G', 'g', 'i', 'I', 'O', 'o', 'S', 's', 'U', 'u', 'C', 'G', 'I', 'O', 'S', 'U', 'c', 'g', 'i', 'o', 's', 'u');
-        $metin   = str_replace($search, $replace, $metin);
-        return $metin;
-    }
+        $url  = trim($url);
+        $url  = strtolower($url);
+        $find = array('<b>', '</b>');
+        $url  = str_replace($find, '', $url);
+        $url  = preg_replace('/<(\/{0,1})img(.*?)(\/{0,1})\>/', 'image', $url);
 
-    function rastGeleSayisalMetin()
-    {
-        $metin = rand(10000000000, 99999999999);
-        return $metin;
+        $find = array(' ', '&quot;', '&amp;', '&', '\r\n', '\n', '/', '\\', '+', '<', '>');
+        $url  = str_replace($find, '-', $url);
+
+        $find = array('é', 'è', 'ë', 'ê', 'É', 'È', 'Ë', 'Ê');
+        $url  = str_replace($find, 'e', $url);
+
+        $find = array('í', 'ı', 'ì', 'î', 'ï', 'I', 'İ', 'Í', 'Ì', 'Î', 'Ï', 'İ');
+        $url  = str_replace($find, 'i', $url);
+
+        $find = array('ó', 'ö', 'Ö', 'ò', 'ô', 'Ó', 'Ò', 'Ô');
+        $url  = str_replace($find, 'o', $url);
+
+        $find = array('á', 'ä', 'â', 'à', 'â', 'Ä', 'Â', 'Á', 'À', 'Â');
+        $url  = str_replace($find, 'a', $url);
+
+        $find = array('ú', 'ü', 'Ü', 'ù', 'û', 'Ú', 'Ù', 'Û');
+        $url  = str_replace($find, 'u', $url);
+
+        $find = array('ç', 'Ç');
+        $url  = str_replace($find, 'c', $url);
+
+        $find = array('ş', 'Ş');
+        $url  = str_replace($find, 's', $url);
+
+        $find = array('ğ', 'Ğ');
+        $url  = str_replace($find, 'g', $url);
+
+        $find = array('/[^a-z0-9\-<>]/', '/[\-]+/', '/<[^>]*>/');
+        $repl = array('', '-', '');
+
+        $url = preg_replace($find, $repl, $url);
+        $url = str_replace('--', '-', $url);
+
+        return $url;
     }
 
     public function get($print_response = true)
