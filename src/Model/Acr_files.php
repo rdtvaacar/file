@@ -48,10 +48,9 @@ class acr_files extends Model
         Acr_files_childs::insert($data);
     }
 
-    function sil_childs($acr_child_file)
+    function sil_childs($acr_child_file, $acr_file_id)
     {
-        $acr_files_childs_sorgu = Acr_files_childs::where('file_name', $acr_child_file);
-        $acr_file_id            = $acr_files_childs_sorgu->first()->acr_file_id;
+        $acr_files_childs_sorgu = Acr_files_childs::where('file_name', $acr_child_file)->where('acr_file_id', $acr_file_id);
         $acr_files_childs_sorgu->delete();
         if (Acr_files_childs::where('acr_file_id', $acr_file_id)->count() == 0) {
             Acr_files::where('id', $acr_file_id)->delete();

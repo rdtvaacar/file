@@ -1523,7 +1523,7 @@ class UploadHandler extends Controller
             $success        = is_file($file_path) && $file_name[0] !== '.' && unlink($file_path);
             $file_dot       = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
             $acr_child_file = str_replace('.' . $file_dot, '', $file_name);
-            $acr_file_model->sil_childs($acr_child_file);
+            $acr_file_model->sil_childs($acr_child_file,$this->options['acr_file_id']);
             if ($success) {
                 foreach ($this->options['image_versions'] as $version => $options) {
                     if (!empty($version)) {
