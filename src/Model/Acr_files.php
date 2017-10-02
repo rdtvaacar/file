@@ -20,7 +20,7 @@ class acr_files extends Model
         if (acr_files::where('id', $acr_file_id)->count() == 0) {
             if (!empty($acr_file_id)) {
                 $data = [
-                    'id'        => $acr_file_id,
+                    'id' => $acr_file_id,
                     'parent_id' => $session_id,
                 ];
             } else {
@@ -51,11 +51,15 @@ class acr_files extends Model
     function sil_childs($acr_child_file, $acr_file_id)
     {
         $acr_files_childs_sorgu = Acr_files_childs::where('file_name', $acr_child_file)->where('acr_file_id', $acr_file_id);
-        $acr_files_childs_sorgu->delete();
+        $sil                    = $acr_files_childs_sorgu->delete();
         if (Acr_files_childs::where('acr_file_id', $acr_file_id)->count() == 0) {
             Acr_files::where('id', $acr_file_id)->delete();
         }
-
+        if ($sil) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
 }
