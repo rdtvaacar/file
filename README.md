@@ -24,9 +24,9 @@ PHP
 $acr_file_id = AcrFile::create($acr_file_id); 
 ```
 acr_file_id: ilişkili tablodan gelmeli örneğin ürünler için kullanacaksanız urun tablonuzda acr_file_id stunu olmalı, acr_file_id değişkeni null gelirse : $acr_file_id = AcrFile::create($acr_file_id) yeni bir acr_file_id oluşturur.
-```php 
-PHP
- echo AcrFile::css();  
+
+
+ {!! AcrFile::css() !!}  
 ```
 CSS dosyalarını yükler.
 ```php 
