@@ -15,5 +15,7 @@
       "Acr\\File\\": "src/"
     }
   },
-  "require": {}
+  "require": {
+    "intervention/image":"dev-master"
+  }
 }
