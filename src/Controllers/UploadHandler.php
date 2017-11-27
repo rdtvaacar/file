@@ -1132,6 +1132,11 @@ class UploadHandler extends Controller
         $file_dot      = strtolower(pathinfo($file->name, PATHINFO_EXTENSION));
         $org_name      = str_replace('.' . $file_dot, '', $name);
         $acr_file_name = self::ingilizceYap($org_name);
+        if (file_exists(base_path() . '/public_html/acr_files/' . $this->options['acr_file_id'] . '/' . $acr_file_name . '.' . $file_dot)) {
+            $acr_file_name = $acr_file_name . '-' . uniqid(rand(10000, 99999));
+        } else {
+            $acr_file_name = $acr_file_name;
+        }
         $file->name    = $acr_file_name . '.' . $file_dot;
         $file->size    = $this->fix_integer_overflow((int)$size);
         $file->type    = $type;
@@ -1153,6 +1158,7 @@ class UploadHandler extends Controller
                         FILE_APPEND
                     );
                 } else {
+
                     $data = [
                         'acr_file_id' => $this->options['acr_file_id'],
                         'file_name_org' => $org_name,
@@ -1519,7 +1525,7 @@ class UploadHandler extends Controller
         }
         $response = array();
         foreach ($file_names as $file_name) {
-            $file_path = $this->get_upload_path($file_name);
+            $file_path      = $this->get_upload_path($file_name);
             $file_dot       = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
             $acr_child_file = str_replace('.' . $file_dot, '', $file_name);
             $data_sil       = $acr_file_model->sil_childs($acr_child_file, $this->options['acr_file_id']);

@@ -200,7 +200,7 @@ class AcrFileController extends Controller
             <span class="fileupload-process"></span>
         </div>
         <!-- The global progress state -->
-        <div class="col-lg-5 fileupload-progress fade">
+        <div class="col-lg-5 fileupload-progress">
             <!-- The global progress bar -->
             <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
                 <div class="progress-bar progress-bar-success" style="width:0%;"></div>
@@ -228,7 +228,7 @@ class AcrFileController extends Controller
 <!-- The template to display files available for upload -->
 <script id="template-upload" type="text/x-tmpl">
 {% for (var i=0, file; file=o.files[i]; i++) { %}
-    <tr class="template-upload fade">
+    <tr class="template-upload">
         <td>
             <span class="preview"></span>
         </td>
