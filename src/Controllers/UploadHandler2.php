@@ -14,7 +14,6 @@ namespace Acr\File\Controllers;
 
 use Illuminate\Routing\Controller;
 use Acr\File\Model\Acr_files;
-use Image;
 
 class UploadHandler extends Controller
 {
@@ -56,8 +55,8 @@ class UploadHandler extends Controller
             'upload_url' => $this->get_full_url() . '/files/',
             'input_stream' => 'php://input',
             'user_dirs' => true,
-            'mkdir_mode' => 0777,
             'e_okul' => 0,
+            'mkdir_mode' => 0777,
             'param_name' => 'files',
             // Set the following option to 'POST', if your server does not support
             // DELETE requests. This is a parameter sent to the client:
@@ -219,7 +218,17 @@ class UploadHandler extends Controller
 
     protected function get_user_id()
     {
-
+        /*$acr_file_model = new Acr_files();
+        if ($this->options['acr_file_id']) {
+            $session_id = $acr_file_model->acr_file_session($this->options['acr_file_id']);
+            if ($session_id == null) {
+                $session_id = uniqid();
+                $acr_file_model->kaydet($this->options['acr_file_id'], $session_id);
+            }
+        } else {
+            $session_id = 'genel';
+        }
+        return $session_id;*/
         return $this->options['acr_file_id'];
     }
 
@@ -1116,8 +1125,9 @@ class UploadHandler extends Controller
                                           $index = null, $content_range = null)
     {
         $acr_file_model = new acr_files();
-        $file           = new \stdClass();
-        $file->name     = $this->get_file_name($uploaded_file, $name, $size, $type, $error,
+
+        $file       = new \stdClass();
+        $file->name = $this->get_file_name($uploaded_file, $name, $size, $type, $error,
             $index, $content_range);
 
         $file_dot      = strtolower(pathinfo($file->name, PATHINFO_EXTENSION));
@@ -1159,16 +1169,6 @@ class UploadHandler extends Controller
                     ];
                     $acr_file_model->child_fields_create($data);
                     move_uploaded_file($uploaded_file, $file_path);
-                    if ($this->options['e_okul'] == 1) {
-                        $img = Image::make($file_path);
-                        $img->fit(230);
-                        $img->crop(133, 177, 50, 0);
-                        if (!is_dir(base_path() . '/public_html/acr_files/' . $this->options['acr_file_id'] . '/e_okul/')) {
-                            mkdir(base_path() . '/public_html/acr_files/' . $this->options['acr_file_id'] . '/e_okul/');
-                        }
-                        $img->limitColors(256, '#ff998d');
-                        $img->save(base_path() . '/public_html/acr_files/' . $this->options['acr_file_id'] . '/e_okul/' . $acr_file_name . '.jpg', 100);
-                    }
                 }
             } else {
                 // Non-multipart uploads (PUT method support)
@@ -1531,7 +1531,9 @@ class UploadHandler extends Controller
             $acr_child_file = str_replace('.' . $file_dot, '', $file_name);
             $data_sil       = $acr_file_model->sil_childs($acr_child_file, $this->options['acr_file_id']);
             if ($data_sil == 1) {
-                @unlink(base_path() . '/public_html/acr_files/' . $this->options['acr_file_id'] . '/e_okul/' . $file_name);
+                if ($this->options['e_okul'] == 1) {
+                    @unlink(base_path() . '/public_html/acr_files/' . $this->options['acr_file_id'] . '/e_okul/');
+                }
                 $success = is_file($file_path) && $file_name[0] !== '.' && unlink($file_path);
                 if ($success) {
                     foreach ($this->options['image_versions'] as $version => $options) {
