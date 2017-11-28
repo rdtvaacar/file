@@ -1166,8 +1166,19 @@ class UploadHandler extends Controller
                         if (!is_dir(base_path() . '/public_html/acr_files/' . $this->options['acr_file_id'] . '/e_okul/')) {
                             mkdir(base_path() . '/public_html/acr_files/' . $this->options['acr_file_id'] . '/e_okul/');
                         }
-                        $img->limitColors(256, '#ff998d');
-                        $img->save(base_path() . '/public_html/acr_files/' . $this->options['acr_file_id'] . '/e_okul/' . $acr_file_name . '.jpg', 100);
+                        if (!is_dir(base_path() . '/public_html/acr_files/' . $this->options['acr_file_id'] . '/temp/')) {
+                            mkdir(base_path() . '/public_html/acr_files/' . $this->options['acr_file_id'] . '/temp/');
+                        }
+                        $img->limitColors(255, '#ff998d');
+                        $img->limitColors(255, '#ff998d');
+
+                        $img->save(base_path() . '/public_html/acr_files/' . $this->options['acr_file_id'] . '/temp/' . $acr_file_name . '.jpg', 100);
+                        $img_2 = Image::make(base_path() . '/public_html/acr_files/' . $this->options['acr_file_id'] . '/temp/' . $acr_file_name . '.jpg');
+                        $img_2->limitColors(255, '#ff998d');
+                        $img_2->limitColors(255, '#ff998d');
+                        $img_2->save(base_path() . '/public_html/acr_files/' . $this->options['acr_file_id'] . '/e_okul/' . $acr_file_name . '.jpg', 100);
+
+
                     }
                 }
             } else {
@@ -1532,6 +1543,7 @@ class UploadHandler extends Controller
             $data_sil       = $acr_file_model->sil_childs($acr_child_file, $this->options['acr_file_id']);
             if ($data_sil == 1) {
                 @unlink(base_path() . '/public_html/acr_files/' . $this->options['acr_file_id'] . '/e_okul/' . $file_name);
+                @unlink(base_path() . '/public_html/acr_files/' . $this->options['acr_file_id'] . '/temp/' . $file_name);
                 $success = is_file($file_path) && $file_name[0] !== '.' && unlink($file_path);
                 if ($success) {
                     foreach ($this->options['image_versions'] as $version => $options) {
