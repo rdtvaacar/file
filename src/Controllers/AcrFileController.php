@@ -17,7 +17,6 @@ class AcrFileController extends Controller
     {
         $acr_file_model = new acr_files();
         return $acr_file_model->kaydet($acr_file_id, $parent_id);
-
     }
 
     function delete(Request $request)
