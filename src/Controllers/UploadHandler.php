@@ -1121,7 +1121,7 @@ class UploadHandler extends Controller
             $index, $content_range);
 
         $file_dot = strtolower(pathinfo($file->name, PATHINFO_EXTENSION));
-        if (in_array($file_dot, ['jpg', 'gif', 'png', 'bmp', 'tif', 'jpeg', 'rar', 'zip', '7z', 'mp4', 'm4a', 'mp3', 'mov', 'vma'])) {
+        if (in_array($file_dot, ['jpg', 'gif', 'png', 'bmp', 'tif', 'jpeg', 'rar', 'zip', '7z', 'mp4', 'm4a', 'mp3', 'mov', 'vma', 'doc', 'docx', 'pdf', 'xls', 'xlsx', 'ppt', 'pptx', 'pptm', 'potx', 'potm', 'ppsx', 'ppsm', 'wmv', 'odp'])) {
 
 
             $org_name      = str_replace('.' . $file_dot, '', $name);
