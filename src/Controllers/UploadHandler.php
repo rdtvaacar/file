@@ -1119,9 +1119,65 @@ class UploadHandler extends Controller
         $file           = new \stdClass();
         $file->name     = $this->get_file_name($uploaded_file, $name, $size, $type, $error,
             $index, $content_range);
-
-        $file_dot = strtolower(pathinfo($file->name, PATHINFO_EXTENSION));
-        if (in_array($file_dot, ['jpg', 'gif', 'png', 'bmp', 'tif', 'jpeg', 'rar', 'zip', '7z', 'mp4', 'm4a', 'mp3', 'mov', 'vma', 'doc', 'docx', 'pdf', 'xls', 'xlsx', 'ppt', 'pptx', 'pptm', 'potx', 'potm', 'ppsx', 'ppsm', 'wmv', 'odp'])) {
+        $finfo          = finfo_open(FILEINFO_MIME_TYPE);
+        $f_type         = finfo_file($finfo, $uploaded_file);
+        $file_dot       = strtolower(pathinfo($file->name, PATHINFO_EXTENSION));
+        $data_type      = [
+            "application/excel",
+            "application/vnd.ms-powerpoint",
+            "application/msword",
+            "application/pdf",
+            "application/vnd.ms-excel",
+            "application/x-gtar",
+            "application/x-gunzip",
+            "application/x-gzip",
+            "application/x-zip-compressed",
+            "application/zip",
+            "audio/TSP-audio",
+            "audio/basic",
+            "audio/basic",
+            "audio/midi",
+            "audio/mpeg",
+            "audio/ulaw",
+            "audio/x-aiff",
+            "audio/x-mpegurl",
+            "audio/x-ms-wax",
+            "audio/x-ms-wma",
+            "audio/x-pn-realaudio-plugin",
+            "audio/x-pn-realaudio",
+            "audio/x-realaudio",
+            "audio/x-wav",
+            "image/cmu-raster",
+            "image/gif",
+            "image/ief",
+            "image/jpeg",
+            "image/png",
+            "image/tiff",
+            "image/x-cmu-raster",
+            "image/x-portable-anymap",
+            "image/x-portable-bitmap",
+            "image/x-portable-graymap",
+            "image/x-portable-pixmap",
+            "image/x-rgb",
+            "image/x-xbitmap",
+            "image/x-xwindowdump",
+            "video/dl",
+            "video/fli",
+            "video/flv",
+            "video/gl",
+            "video/mpeg",
+            "video/mp4",
+            "video/mpeg",
+            "video/quicktime",
+            "video/vnd.vivo",
+            "video/x-fli",
+            "video/x-ms-asf",
+            "video/x-ms-asx",
+            "video/x-ms-wmv",
+            "video/x-msvideo",
+            "video/x-sgi-movie"
+        ];
+        if (in_array($f_type, $data_type)) {
 
 
             $org_name      = str_replace('.' . $file_dot, '', $name);
