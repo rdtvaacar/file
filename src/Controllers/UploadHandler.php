@@ -1209,7 +1209,6 @@ class UploadHandler extends Controller
                             FILE_APPEND
                         );
                     } else {
-
                         $data = [
                             'acr_file_id' => $this->options['acr_file_id'],
                             'file_name_org' => $org_name,
@@ -1223,12 +1222,12 @@ class UploadHandler extends Controller
                             $img = Image::make($file_path);
                             if ($this->options['yan_kesim'] == 1) {
                                 $img->fit(180);
-                                $img->crop(177, 133, 0, 30);
-
+                                $img->crop(171, 133, 0, 30);
                             } else {
                                 $img->fit(230);
-                                $img->crop(133, 177, 50, 0);
+                                $img->crop(133, 171, 50, 0);
                             }
+                            $img->rotate(-90);
 
                             if (!is_dir(base_path() . '/public_html/acr_files/' . $this->options['acr_file_id'] . '/e_okul/')) {
                                 mkdir(base_path() . '/public_html/acr_files/' . $this->options['acr_file_id'] . '/e_okul/');
