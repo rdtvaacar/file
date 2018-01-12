@@ -32,7 +32,7 @@ class AcrFileController extends Controller
         @unlink(base_path() . '/public_html/acr_files/' . $session_id . '/e_okul/' . $file);
     }
 
-    function option($acr_file_id = null, $yuklenenler = 0, $e_okul = null)
+    function option($acr_file_id = null, $yuklenenler = 0, $e_okul = null, $yan_kesim = null)
     {
         $yuklenenler = $yuklenenler == 0 ? true : false;
         if ($e_okul == 1) {
@@ -45,6 +45,7 @@ class AcrFileController extends Controller
         $options = [
             'acr_file_id' => $acr_file_id,
             'e_okul' => $e_okul,
+            'yan_kesim' => $yan_kesim,
             'upload_dir' => base_path() . '/public_html/acr_files/',
             'upload_url' => '/acr_files/',
             'script_url' => '/acr/file/upload/',
@@ -136,7 +137,8 @@ class AcrFileController extends Controller
         $acr_file_id = $request->input('acr_file_id');
         $yuklenenler = $request->input('yuklenenler');
         $e_okul      = $request->input('e_okul');
-        new UploadHandler(self::option($acr_file_id, $yuklenenler, $e_okul));
+        $yan_kesim   = $request->input('yan_kesim');
+        new UploadHandler(self::option($acr_file_id, $yuklenenler, $e_okul, $yan_kesim));
     }
 
     function login(Request $request)
@@ -312,7 +314,7 @@ class AcrFileController extends Controller
     </script>';
     }
 
-    function js($acr_file_id, $yuklenenler = 0, $e_okul = null)
+    function js($acr_file_id, $yuklenenler = 0, $e_okul = null, $yan_kesim = null)
     {
         return '<script src="/plugins/jfup/js/vendor/jquery.ui.widget.js"></script>
 <!-- The Templates plugin is included to render the upload/download listings -->
@@ -354,7 +356,7 @@ class AcrFileController extends Controller
         $(\'#fileupload\').fileupload({
             // Uncomment the following to send cross-domain cookies:
             //xhrFields: {withCredentials: true},
-            url: \'/acr/file/upload?acr_file_id=' . $acr_file_id . '&yuklenenler=' . $yuklenenler . '&e_okul=' . $e_okul . '\'
+            url: \'/acr/file/upload?acr_file_id=' . $acr_file_id . '&yuklenenler=' . $yuklenenler . '&e_okul=' . $e_okul . '&yan_kesim=' . $yan_kesim . '\'
         });
 
         // Enable iframe cross-domain access via redirect option:

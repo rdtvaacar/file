@@ -58,6 +58,7 @@ class UploadHandler extends Controller
             'user_dirs' => true,
             'mkdir_mode' => 0777,
             'e_okul' => 0,
+            'yan_kesim' => 0,
             'param_name' => 'files',
             // Set the following option to 'POST', if your server does not support
             // DELETE requests. This is a parameter sent to the client:
@@ -1220,21 +1221,28 @@ class UploadHandler extends Controller
                         move_uploaded_file($uploaded_file, $file_path);
                         if ($this->options['e_okul'] == 1) {
                             $img = Image::make($file_path);
-                            $img->fit(230);
-                            $img->crop(133, 177, 50, 0);
+                            if ($this->options['yan_kesim'] == 1) {
+                                $img->fit(180);
+                                $img->crop(177, 133, 0, 30);
+
+                            } else {
+                                $img->fit(230);
+                                $img->crop(133, 177, 50, 0);
+                            }
+
                             if (!is_dir(base_path() . '/public_html/acr_files/' . $this->options['acr_file_id'] . '/e_okul/')) {
                                 mkdir(base_path() . '/public_html/acr_files/' . $this->options['acr_file_id'] . '/e_okul/');
                             }
                             if (!is_dir(base_path() . '/public_html/acr_files/' . $this->options['acr_file_id'] . '/temp/')) {
                                 mkdir(base_path() . '/public_html/acr_files/' . $this->options['acr_file_id'] . '/temp/');
                             }
-                            $img->limitColors(255, '#ff998d');
-                            $img->limitColors(255, '#ff998d');
-
+                            /*$img->limitColors(255, '#D1542E');
+                            $img->limitColors(255, '#D1542E');*/
                             $img->save(base_path() . '/public_html/acr_files/' . $this->options['acr_file_id'] . '/temp/' . $acr_file_name . '.jpg', 100);
                             $img_2 = Image::make(base_path() . '/public_html/acr_files/' . $this->options['acr_file_id'] . '/temp/' . $acr_file_name . '.jpg');
-                            $img_2->limitColors(255, '#ff998d');
-                            $img_2->limitColors(255, '#ff998d');
+                            /*$img_2->limitColors(255, '#D1542E');
+                            $img_2->limitColors(255, '#D1542E');*/
+                            $img_2->sharpen(10);
                             $img_2->save(base_path() . '/public_html/acr_files/' . $this->options['acr_file_id'] . '/e_okul/' . $acr_file_name . '.jpg', 100);
 
 
