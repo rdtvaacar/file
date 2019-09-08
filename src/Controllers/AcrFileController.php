@@ -4,6 +4,8 @@ namespace Acr\File\Controllers;
 
 
 use Acr\File\Model\acr_files;
+use Acr\File\Model\Acr_files_childs;
+use App\Acr_file_child_plan;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Acr\File\Model\File_model;
@@ -13,11 +15,19 @@ use Acr\File\Controllers\MailController;
 
 class AcrFileController extends Controller
 {
+    function download($id)
+    {
+        $acr_file_model = new Acr_files_childs();
+        $file           = $acr_file_model->where('id', $id)->first();
+        return response()->download(base_path("/public_html/acr_files/$file->acr_file_id/$file->file_name/.$file->file_type"));
+    }
+
     function create($acr_file_id = null, $parent_id = null)
     {
         $acr_file_model = new acr_files();
         return $acr_file_model->kaydet($acr_file_id, $parent_id);
     }
+
 
     function delete(Request $request)
     {
@@ -43,43 +53,44 @@ class AcrFileController extends Controller
             $max_height = 180;
         }
         $options = [
-            'acr_file_id' => $acr_file_id,
-            'e_okul' => $e_okul,
-            'yan_kesim' => $yan_kesim,
-            'upload_dir' => base_path() . '/public_html/acr_files/',
-            'upload_url' => '/acr_files/',
-            'script_url' => '/acr/file/upload/',
+            'acr_file_id'              => $acr_file_id,
+            'e_okul'                   => $e_okul,
+            'yan_kesim'                => $yan_kesim,
+            'upload_dir'               => base_path() . '/public_html/acr_files/',
+            'upload_url'               => '/acr_files/',
+            'script_url'               => '/acr/file/upload/',
             // the redirect parameter, e.g. '/files/'.
-            'download_via_php' => false,
+            'download_via_php'         => false,
             // Read files in chunks to avoid memory limits when download_via_php
             // is enabled, set to 0 to disable chunked reading of files:
-            'readfile_chunk_size' => 10 * 1024 * 1024, // 10 MiB
+            'readfile_chunk_size'      => 10 * 1024 * 1024,
+            // 10 MiB
             // Defines which files can be displayed inline when downloaded:
-            'inline_file_types' => '/\.(gif|jpe?g|png)$/i',
+            'inline_file_types'        => '/\.(gif|jpe?g|png)$/i',
             // Defines which files (based on their names) are accepted for upload:
-            'accept_file_types' => '/.+$/i',
+            'accept_file_types'        => '/.+$/i',
             // The php.ini settings upload_max_filesize and post_max_size
             // take precedence over the following max_file_size setting:
-            'max_file_size' => null,
-            'min_file_size' => 1,
+            'max_file_size'            => null,
+            'min_file_size'            => 1,
             // The maximum number of files for the upload directory:
-            'max_number_of_files' => null,
+            'max_number_of_files'      => null,
             // Defines which files are handled as image files:
-            'image_file_types' => '/\.(gif|jpe?g|png)$/i',
+            'image_file_types'         => '/\.(gif|jpe?g|png)$/i',
             // Use exif_imagetype on all files to correct file extensions:
             'correct_image_extensions' => false,
             // Image resolution restrictions:
 
-            'max_width' => null,
-            'max_height' => null,
-            'min_width' => 1,
-            'min_height' => 1,
+            'max_width'               => null,
+            'max_height'              => null,
+            'min_width'               => 1,
+            'min_height'              => 1,
             // Set the following option to false to enable resumable uploads:
             'discard_aborted_uploads' => true,
             // Set to 0 to use the GD library to scale and orient images,
             // set to 1 to use imagick (if installed, falls back to GD),
             // set to 2 to use the ImageMagick convert binary directly:
-            'image_library' => 1,
+            'image_library'           => 1,
             // Uncomment the following to define an array of resource limits
             // for imagick:
             /*
@@ -89,7 +100,7 @@ class AcrFileController extends Controller
             ),
             */
             // Command or path for to the ImageMagick convert binary:
-            'convert_bin' => 'convert',
+            'convert_bin'             => 'convert',
             // Uncomment the following to add parameters in front of each
             // ImageMagick convert call (the limit constraints seem only
             // to have an effect if put in front):
@@ -97,8 +108,8 @@ class AcrFileController extends Controller
             'convert_params' => '-limit memory 32MiB -limit map 32MiB',
             */
             // Command or path for to the ImageMagick identify binary:
-            'identify_bin' => 'identify',
-            'image_versions' => array(
+            'identify_bin'            => 'identify',
+            'image_versions'          => array(
                 // The empty image version key defines options for the original image:
                 '' => array(
                     // Automatically rotate images based on EXIF meta data:
@@ -107,7 +118,7 @@ class AcrFileController extends Controller
                 // Uncomment the following to create medium sized images:
 
                 'medium' => array(
-                    'max_width' => 1200,
+                    'max_width'  => 1200,
                     'max_height' => 1200
                 ),
 
@@ -121,12 +132,12 @@ class AcrFileController extends Controller
                     //'upload_url' => $this->get_full_url().'/thumb/',
                     // Uncomment the following to force the max
                     // dimensions and e.g. create square thumbnails:
-                    'crop' => true,
-                    'max_width' => $max_width,
+                    'crop'       => true,
+                    'max_width'  => $max_width,
                     'max_height' => $max_height
                 ),
             ),
-            'print_response' => $yuklenenler
+            'print_response'          => $yuklenenler
         ];
         return $options;
 
@@ -190,7 +201,7 @@ class AcrFileController extends Controller
     <div class="row fileupload-buttonbar">
         <div class="col-lg-7">
             <!-- The fileinput-button span is used to style the file input field as button -->
-            <span class="btn btn-success fileinput-button">
+            <span class=" btn-success fileinput-button">
                     <i class="glyphicon glyphicon-plus"></i>
                     <span>Dosyaları Seç</span>
                     <input type="file" name="files[]" multiple>
