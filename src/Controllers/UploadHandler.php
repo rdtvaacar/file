@@ -1082,6 +1082,7 @@ class UploadHandler extends Controller
                             'file_name'     => $acr_file_name,
                             'file_size'     => $file->size,
                             'file_type'     => $file_dot,
+                            'user_id'       => auth()->id(),
                         ];
                         $acr_file_model->child_fields_create($data);
                         move_uploaded_file($uploaded_file, $file_path);
