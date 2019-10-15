@@ -5,6 +5,7 @@ namespace Acr\File\Controllers;
 
 use Acr\File\Model\acr_files;
 use Acr\File\Model\Acr_files_childs;
+use AcrMenu;
 use App\Acr_file_child_plan;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -28,18 +29,46 @@ class AcrFileController extends Controller
         return $acr_file_model->kaydet($acr_file_id, $parent_id);
     }
 
+    function delete_id(Request $request, $id = null)
+    {
+        $file_id     = empty($id) ? $request->id : $id;
+        $child_model = new Acr_files_childs();
+        $roles       = AcrMenu::roles();
+        if (in_array(1, $roles)) {
+            $sorgu = $child_model->where('id', $file_id);
+        } else {
+            $sorgu = $child_model->where('id', $file_id)->where('user_id', auth()->id());
+        }
+        $file = $sorgu->first();
+        @unlink(base_path() . '/public_html/acr_files/' . $file->acr_file_id . '/' . $file->file_name . '.' . $file->file_type);
+        @unlink(base_path() . '/public_html/acr_files/' . $file->acr_file_id . '/thumbnail/' . $file->file_name . '.' . $file->file_type);
+        @unlink(base_path() . '/public_html/acr_files/' . $file->acr_file_id . '/medium/' . $file->file_name . '.' . $file->file_type);
+        @unlink(base_path() . '/public_html/acr_files/' . $file->acr_file_id . '/e_okul/' . $file->file_name . '.' . $file->file_type);
+        $sorgu->delete();
+        return response()->json([
+            'message' => 'Başarıyla Silindi',
+            'code'    => 200
+        ]);
+    }
 
     function delete(Request $request)
     {
         $acr_file_model = new acr_files();
         $file           = $request->input('file');
         $acr_file_id    = $request->input('acr_file_id');
-
-        $session_id = $acr_file_model->acr_file_session($acr_file_id);
-        @unlink(base_path() . '/public_html/acr_files/' . $session_id . '/' . $file);
-        @unlink(base_path() . '/public_html/acr_files/' . $session_id . '/thumbnail/' . $file);
-        @unlink(base_path() . '/public_html/acr_files/' . $session_id . '/medium/' . $file);
-        @unlink(base_path() . '/public_html/acr_files/' . $session_id . '/e_okul/' . $file);
+        $roles          = AcrMenu::roles();
+        if (in_array(1, $roles)) {
+            $control = $acr_file_model->where('id', $acr_file_id)->count();
+        } else {
+            $control = $acr_file_model->where('id', $acr_file_id)->where('user_id', auth()->id())->count();
+        }
+        if ($control < 1) {
+            return;
+        }
+        @unlink(base_path() . '/public_html/acr_files/' . $acr_file_id . '/' . $file);
+        @unlink(base_path() . '/public_html/acr_files/' . $acr_file_id . '/thumbnail/' . $file);
+        @unlink(base_path() . '/public_html/acr_files/' . $acr_file_id . '/medium/' . $file);
+        @unlink(base_path() . '/public_html/acr_files/' . $acr_file_id . '/e_okul/' . $file);
     }
 
     function option($acr_file_id = null, $yuklenenler = 0, $e_okul = null, $yan_kesim = null)
@@ -159,20 +188,6 @@ class AcrFileController extends Controller
             Auth::loginUsingId(1, true);
             echo $file_model->uye_id();
         }
-    }
-
-    function kontrol(Request $request)
-    {
-        if (Auth::check()) {
-            echo 'giriş yapıldı';
-        } else {
-            echo 'giriş yapılmadı';
-        }
-    }
-
-    function logOut()
-    {
-        Auth::logOut();
     }
 
     function css()
